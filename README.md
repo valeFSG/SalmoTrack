@@ -100,4 +100,3 @@ Ambos triggers actúan en cadena: un solo `INSERT` en monitoreo sanitario puede 
    /
 ```
 
-## Estructura del repositorio
