@@ -591,6 +591,8 @@ END;
    PRUEBAS
    ============================================================ */
 
+/*IMPRIME EL REPORTE */
+
 SET SERVEROUTPUT ON;
 
 BEGIN
@@ -605,9 +607,35 @@ BEGIN
 END;
 /
 
-SELECT * FROM JAULA WHERE estado = 'EN TRATAMIENTO';
-SELECT * FROM AUDITORIA_JAULA ORDER BY fecha_cambio;
 
-SELECT id_jaula, estado FROM JAULA WHERE estado = 'EN TRATAMIENTO';
+/*CURSOR CON PARAMETROS  */
 
-SELECT * FROM AUDITORIA_JAULA ORDER BY fecha_cambio;
+SET SERVEROUTPUT ON;
+
+DECLARE
+    CURSOR c_jaulas_centro(p_id_centro NUMBER) IS
+        SELECT j.id_jaula, e.nombre_especie, j.biomasa_actual
+        FROM JAULA j JOIN ESPECIE e ON j.id_especie = e.id_especie
+        WHERE j.id_centro = p_id_centro;
+BEGIN
+    FOR jaula IN c_jaulas_centro(2) LOOP  
+        DBMS_OUTPUT.PUT_LINE('Jaula ' || jaula.id_jaula || ' (' || jaula.nombre_especie || ') - Biomasa: ' || jaula.biomasa_actual);
+    END LOOP;
+END;
+/
+
+
+/*CURSOR SIN PARAMETRO */
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    CURSOR c_centros IS
+        SELECT id_centro, nombre FROM CENTRO_CULTIVO;
+BEGIN
+    FOR centro IN c_centros LOOP
+        DBMS_OUTPUT.PUT_LINE('Centro: ' || centro.id_centro || ' - ' || centro.nombre);
+    END LOOP;
+END;
+/
+
